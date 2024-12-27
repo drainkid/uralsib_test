@@ -1,4 +1,4 @@
-import {Post} from "./types.ts"
+import {Post} from "../types.ts"
 import {Divider, IconButton, ListItem, ListItemText} from "@mui/material"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import {useNavigate} from "react-router";
@@ -24,7 +24,7 @@ const PostItem = ({posts}: PostItemProps) => {
             </ListItem>
             <Divider component="li"/>
         </div>
-    );
-};
+    )
+}
 
 export default PostItem;

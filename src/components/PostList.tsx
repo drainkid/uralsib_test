@@ -2,7 +2,7 @@ import { CircularProgress, Container, List, Typography } from "@mui/material";
 import axios from "axios";
 import { Fragment, useEffect, useRef, useState } from "react";
 import PostItem from "./PostItem.tsx";
-import { Post } from "./types.ts";
+import { Post } from "../types.ts";
 
 const PostList = () => {
     const [posts, setPosts] = useState<Post[]>([])
@@ -16,7 +16,7 @@ const PostList = () => {
         border: '1px solid',
         borderColor: 'divider',
         backgroundColor: 'background.paper',
-    };
+    }
 
     const getPosts = async () => {
         try {
@@ -31,40 +31,44 @@ const PostList = () => {
                 }
             )
             if (res.data.length === 0) {
-                setHasMore(false);
+                setHasMore(false)
             } else {
-                setPosts((prevPosts) => [...prevPosts, ...res.data]);
+                setPosts((prevPosts) => [...prevPosts, ...res.data])
             }
-        } catch (error) {
-            alert(`Ошибка при загрузке постов: ${error}`);
-        } finally {
-            setIsLoading(false);
         }
-    };
+        catch (error) {
+            alert(`Ошибка при загрузке постов: ${error}`)
+        }
+        finally {
+            setIsLoading(false)
+        }
+    }
 
-
+    // первоначальная загрузка
     useEffect(() => {
         if (!hasFetched.current) {
-            getPosts();
+            getPosts()
             hasFetched.current = true;
         }
-    }, []);
+    }, [])
 
+    // запрос на получение постов для следующих страниц
     useEffect(() => {
-        if (page === 1) return;
-        getPosts();
-    }, [page]);
+        if (page === 1) return
+        getPosts()
+    }, [page])
 
+    // пагинация с помощью IntersectionObserver
     useEffect(() => {
         if (isLoading || !hasMore) return
 
         const observer = new IntersectionObserver(
             (entries) => {
                 if (entries[0].isIntersecting) {
-                    setPage((prevPage) => prevPage + 1);
+                    setPage((prevPage) => prevPage + 1)
                 }
             },
-        );
+        )
 
         if (lastElement.current) {
             observer.observe(lastElement.current);
@@ -72,7 +76,7 @@ const PostList = () => {
 
         return () => {
             if (lastElement.current) {
-                observer.unobserve(lastElement.current);
+                observer.unobserve(lastElement.current)
             }
         }
     }, [isLoading, hasMore])
@@ -92,16 +96,13 @@ const PostList = () => {
                         </Fragment>
                     ))}
                 </List>
+
                 <div ref={lastElement} style={{height: "10px"}}/>
                 {isLoading && <CircularProgress sx={{display: "block", margin: "auto"}}/>}
-                {!hasMore && (
-                    <Typography sx={{textAlign: "center", marginTop: "20px"}}>
-                        Посты закончились.
-                    </Typography>
-                )}
+
             </Container>
         </div>
     )
 };
 
-export default PostList;
+export default PostList

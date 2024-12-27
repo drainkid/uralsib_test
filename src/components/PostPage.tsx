@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import {Comments, Post} from "./types.ts";
+import {Comments, Post} from "../types.ts";
 import {useParams} from "react-router";
 import axios from "axios";
 import {Avatar, Box, CircularProgress, Container, Divider, Paper, Typography} from "@mui/material";
@@ -36,7 +36,6 @@ const PostPage = () => {
         <div>
             { (post) ?
             <Container>
-
                 <Typography variant="h4" sx={{textAlign: 'center', marginTop: '50px'}}>
                     Вы открыли пост под номером {params.id}
                 </Typography>
