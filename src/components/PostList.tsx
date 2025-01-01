@@ -5,11 +5,11 @@ import PostItem from "./PostItem.tsx";
 import { Post } from "../types.ts";
 
 const PostList = () => {
+
     const [posts, setPosts] = useState<Post[]>([])
     const [isLoading, setIsLoading] = useState(false)
     const [page, setPage] = useState(1)
     const [hasMore, setHasMore] = useState(true)
-    const hasFetched = useRef(false)
     const lastElement = useRef<HTMLDivElement>(null)
 
     const ListStyle = {
@@ -44,13 +44,11 @@ const PostList = () => {
         }
     }
 
-    // первоначальная загрузка
+    // загрузка первой страницы
     useEffect(() => {
-        if (!hasFetched.current) {
             getPosts()
-            hasFetched.current = true;
         }
-    }, [])
+    , [])
 
     // запрос на получение постов для следующих страниц
     useEffect(() => {
@@ -58,9 +56,10 @@ const PostList = () => {
         getPosts()
     }, [page])
 
-    // пагинация с помощью IntersectionObserver
+    // пагинация с помощью IntersectionObserver API
     useEffect(() => {
-        if (isLoading || !hasMore) return
+
+        if (isLoading || !hasMore) return;
 
         const observer = new IntersectionObserver(
             (entries) => {
@@ -79,6 +78,7 @@ const PostList = () => {
                 observer.unobserve(lastElement.current)
             }
         }
+
     }, [isLoading, hasMore])
 
 
