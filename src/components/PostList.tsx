@@ -1,10 +1,10 @@
 import { CircularProgress, Container, List, Typography } from "@mui/material";
-import axios from "axios";
-import { Fragment, useEffect, useRef, useState } from "react";
+import {FC, Fragment, useEffect, useRef, useState} from "react";
 import PostItem from "./PostItem.tsx";
 import { Post } from "../types.ts";
+import {fetchPosts} from "../services/api.ts";
 
-const PostList = () => {
+const PostList:FC = () => {
 
     const [posts, setPosts] = useState<Post[]>([])
     const [isLoading, setIsLoading] = useState(false)
@@ -20,21 +20,18 @@ const PostList = () => {
 
     const getPosts = async () => {
         try {
-            setIsLoading(true);
-            const res = await axios.get(
-                `https://jsonplaceholder.typicode.com/posts`,
-                {
-                    params: {
-                        _limit: 10,
-                        _page: page,
-                    }
-                }
-            )
-            if (res.data.length === 0) {
+
+            setIsLoading(true)
+            const res = await fetchPosts(10, page)
+
+            if (res.length === 0) {
                 setHasMore(false)
-            } else {
-                setPosts((prevPosts) => [...prevPosts, ...res.data])
             }
+
+            else {
+                setPosts((prevPosts) => [...prevPosts, ...res])
+            }
+
         }
         catch (error) {
             alert(`Ошибка при загрузке постов: ${error}`)

@@ -1,10 +1,10 @@
-import {useEffect, useState} from "react";
+import {FC, useEffect, useState} from "react";
 import {Comments, Post} from "../types.ts";
 import {useParams} from "react-router";
-import axios from "axios";
 import {Avatar, Box, CircularProgress, Container, Divider, Paper, Typography} from "@mui/material";
+import {fetchCommentsPostById, fetchPostById} from "../services/api.ts";
 
-const PostPage = () => {
+const PostPage:FC = () => {
 
 
     const [post, setPost] = useState<Post>()
@@ -14,14 +14,14 @@ const PostPage = () => {
 
     const getPostById = async () => {
 
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${params.id}`)
-        setPost(res.data)
+        const res = await fetchPostById(params.id)
+        setPost(res)
     }
 
     const getCommentsPostById = async () => {
 
-        const res = await axios.get(`https://jsonplaceholder.typicode.com/posts/${params.id}/comments`)
-        setComments(res.data)
+        const res = await fetchCommentsPostById(params.id)
+        setComments(res)
     }
 
 

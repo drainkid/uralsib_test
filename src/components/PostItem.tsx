@@ -2,6 +2,7 @@ import {Post} from "../types.ts"
 import {Divider, IconButton, ListItem, ListItemText} from "@mui/material"
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward'
 import {useNavigate} from "react-router";
+import {FC} from "react";
 
 interface PostItemProps {
     posts:Post
@@ -9,7 +10,7 @@ interface PostItemProps {
 
 
 
-const PostItem = ({posts}: PostItemProps) => {
+const PostItem: FC<PostItemProps> = ({posts}) => {
 
     const navigate = useNavigate();
     const handleNavigation = () => navigate(`/${posts.id}`)
